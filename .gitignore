@@ -1,1 +1,9 @@
+# editors
 .idea
+
+# build
+build
+
+# coverage
+c.out
+coverage.out

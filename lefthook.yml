@@ -1,9 +1,14 @@
-# EXAMPLE USAGE:
-#
-#   Refer for explanation to following link:
-#   https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
-#
-# pre-push:
+commit-msg:
+  scripts:
+    "msg.sh":
+      runner: bash
+pre-push:
+  parallel: true
+  commands:
+    build:
+      run: go build -o build/app cmd/main.go
+    coverage:
+      run: go test -coverprofile=coverage.out ./...
 #   commands:
 #     packages-audit:
 #       tags: frontend security
@@ -33,7 +38,4 @@
 #       runner: node
 #     "any.go":
 #       runner: go run
-commit-msg:
-  scripts:
-    "msg.sh":
-      runner: bash
+

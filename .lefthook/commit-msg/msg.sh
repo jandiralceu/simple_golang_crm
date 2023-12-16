@@ -15,6 +15,9 @@ if ! [[ $commit_msg =~ $commit_msg_pattern ]]; then
     
     # Available prefixes
     echo "Available prefixes: feat, fix, docs, style, refactor, test, chore, ci"
-    
+
+    # Link to conventional commit documentation
+    echo "For more information, refer to the Conventional Commits specification: https://www.conventionalcommits.org/"
+
     exit 1
 fi
