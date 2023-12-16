@@ -6,6 +6,6 @@ pre-push:
   parallel: true
   commands:
     build:
-      run: go build -o build/app cmd/main.go
+      run: go build -o build/app cmd/server/main.go
     coverage:
       run: go test -coverprofile=coverage.out ./...

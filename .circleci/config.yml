@@ -1,0 +1,29 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.16
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: go mod download
+
+      - run:
+          name: Build application
+          command: go build -o app cmd/server/main.go
+
+      - run:
+          name: Run tests
+          command: go test ./...
+
+      - store_artifacts:
+          path: app
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
