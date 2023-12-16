@@ -14,7 +14,7 @@ if ! [[ $commit_msg =~ $commit_msg_pattern ]]; then
     echo "Suggested format: feat(scope): Add new feature"
     
     # Available prefixes
-    echo "Available prefixes: feat, fix, docs, style, refactor, test, chore"
+    echo "Available prefixes: feat, fix, docs, style, refactor, test, chore, ci"
     
     exit 1
 fi
