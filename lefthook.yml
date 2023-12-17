@@ -1,3 +1,16 @@
+min_version: 1.5.5
+
+skip_output:
+  - meta
+pre-commit:
+  parallel: true
+  commands:
+    # test:
+    #   run: go test -run /{staged_files}
+    #   fail_text: "Error on running tests for staged files"
+    lint:
+      run: go vet ./...
+      fail_text: "Error on running linter"
 commit-msg:
   scripts:
     "msg.sh":
@@ -7,5 +20,7 @@ pre-push:
   commands:
     build:
       run: go build -o build/app cmd/server/main.go
+      fail_text: "Error on building application"
     coverage:
       run: go test -coverprofile=coverage.out ./...
+      fail_text: "Error on generating coverage report"
