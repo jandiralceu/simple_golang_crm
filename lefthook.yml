@@ -19,7 +19,7 @@ pre-push:
   parallel: true
   commands:
     build:
-      run: go build -o build/app cmd/server/main.go
+      run: go build -o build/app cmd/crm/main.go
       fail_text: "Error on building application"
     coverage:
       run: go test -coverprofile=coverage.out ./...

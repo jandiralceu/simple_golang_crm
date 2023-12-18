@@ -13,7 +13,7 @@ jobs:
 
       - run:
           name: Build application
-          command: go build -o app cmd/server/main.go
+          command: go build -o app cmd/crm/main.go
 
       - run:
           name: Run tests
