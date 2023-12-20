@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/go-chi/chi/v5"
+	"log"
 	"net/http"
 )
 
 func main() {
 	r := chi.NewRouter()
-	println("Hello, World!")
 
 	r.Route("/api/v1/customers", func(r chi.Router) {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +27,5 @@ func main() {
 		})
 	})
 
-	if err := http.ListenAndServe(":8080", r); err != nil {
-		panic(err)
-	}
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
