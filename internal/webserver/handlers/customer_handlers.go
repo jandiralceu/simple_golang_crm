@@ -16,9 +16,9 @@ type CustomerHandler struct {
 }
 
 // NewCustomerHandler returns a new CustomerHandler instance
-//func NewCustomerHandler(db database.ICustomer) *CustomerHandler {
-//	return &CustomerHandler{CategoryDB: db}
-//}
+func NewCustomerHandler(db database.ICustomer) *CustomerHandler {
+	return &CustomerHandler{CategoryDB: db}
+}
 
 // Create is a handler to create a Customer
 func (h *CustomerHandler) Create(w http.ResponseWriter, r *http.Request) {
@@ -32,6 +32,7 @@ func (h *CustomerHandler) Create(w http.ResponseWriter, r *http.Request) {
 	category, err := entities.NewCustomer(c.Name, c.Role, c.Email, c.Phone)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+
 		return
 	}
 
