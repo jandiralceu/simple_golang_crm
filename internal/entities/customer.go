@@ -3,6 +3,7 @@ package entities
 import (
 	"errors"
 	"github.com/jandiralceu/crm/pkg/entities"
+	"time"
 )
 
 // Customer represents a customer
@@ -13,6 +14,7 @@ type Customer struct {
 	Email     string      `json:"email"`
 	Phone     string      `json:"phone"`
 	Contacted bool        `json:"contacted"`
+	CreatedAt time.Time   `json:"created_at"`
 }
 
 // NewCustomer creates a new Customer
@@ -24,6 +26,7 @@ func NewCustomer(name, role, email, phone string) (*Customer, error) {
 		Email:     email,
 		Phone:     phone,
 		Contacted: false,
+		CreatedAt: time.Now(),
 	}
 
 	if err := category.isValid(); err != nil {
