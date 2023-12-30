@@ -1,6 +1,8 @@
+![Github Actions Status](https://github.com/jandiralceu/simple_golang_crm/actions/workflows/main.yml/badge.svg)
+
 # CRM
 
-A simple CRM API.
+This simple CRM API is the final project from Udacity Golang course.
 
 ## Run app locally
 
@@ -16,7 +18,7 @@ In the root project terminal run:
 go build -o build/app cmd/server/main.go
 ```
 
-The build version will be: `build/app`
+The build version will be located at: `build/app`
 
 ## Coverage
 
