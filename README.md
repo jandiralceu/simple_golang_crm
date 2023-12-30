@@ -1,4 +1,4 @@
-![Github Actions Status](https://github.com/jandiralceu/simple_golang_crm/actions/workflows/main.yml/badge.svg)
+![CI-CD Status](https://github.com/jandiralceu/simple_golang_crm/actions/workflows/main.yml/badge.svg?event=push)
 
 # Simple CRM
 
