@@ -1,0 +1,30 @@
+name: Production Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint_test_and_build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [1.21.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: ⏳ Install dependencies
+        run: go mod tidy
+
+      - name: 👀 Lint
+        run: go vet ./...
+
+      - name: 👨🏿‍⚕️ Test
+        run: go test -coverprofile=coverage.out ./...
