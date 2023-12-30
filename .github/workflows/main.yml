@@ -39,7 +39,7 @@ jobs:
       - name: 📈 Send coverage to coveralls
         env:
           COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
-        run: goveralls -repotoken $COVERALLS_TOKEN -coverprofile=covprofile.out -race -covermode atomic -v
+        run: goveralls -repotoken $COVERALLS_TOKEN
 
       - name: 👷🏿 Build
         run: go build cmd/crm/main.go
