@@ -24,7 +24,7 @@ jobs:
           go-version: ${{ matrix.go-version }}
 
       - name: ⏳ Install dependencies
-        run: go mod tidy
+        run: go mod download
 
       - name: 🔍 Lint
         run: go vet ./...
@@ -38,7 +38,7 @@ jobs:
       - name: 📈 Send coverage to coveralls
         env:
           COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
-        run: goveralls -coverprofile=covprofile -service=github
+        run: -repotoken $COVERALLS_TOKEN -coverprofile=coverage.out -race -covermode atomic -v
 
       - name: 👷🏿 Build
         run: go build cmd/crm/main.go
