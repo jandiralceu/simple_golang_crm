@@ -9,8 +9,7 @@ jobs:
   lint_test_and_build:
     runs-on: ubuntu-latest
 
-    # env:
-    #   COVERALLS_TOKEN: ${{ secrets.PRODUCTION_COVERALLS_TOKEN }}
+    environment: Production
 
     strategy:
       matrix:
@@ -38,7 +37,7 @@ jobs:
 
       - name: 📈 Send coverage to coveralls
         env:
-          COVERALLS_TOKEN: ${{ secrets.PRODUCTION_COVERALLS_TOKEN }}
+          COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
         run: goveralls -coverprofile=covprofile -service=github
 
       - name: 👷🏿 Build
