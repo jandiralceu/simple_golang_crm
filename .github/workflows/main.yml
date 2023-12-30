@@ -27,7 +27,7 @@ jobs:
         run: go vet ./...
 
       - name: 👨🏿‍⚕️ Test
-        run: go test -coverprofile=coverage.out ./...
+        run: go test -coverprofile=c.out ./...
 
       - name: 👷🏿 Build
-        run: go build -o build/app cmd/crm/main.go
+        run: go build cmd/crm/main.go

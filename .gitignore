@@ -2,8 +2,7 @@
 .idea
 
 # build
-build
+main
 
 # coverage
 c.out
-coverage.out
