@@ -28,3 +28,6 @@ jobs:
 
       - name: 👨🏿‍⚕️ Test
         run: go test -coverprofile=coverage.out ./...
+
+      - name: 👷🏿 Build
+        run: go build -o build/app cmd/crm/main.go
