@@ -40,7 +40,7 @@ func (c *Customer) FindAll(page, limit int, sort string) ([]entities.Customer, e
 // FindByID retrieves a customer by its ID from the database
 func (c *Customer) FindByID(id string) (*entities.Customer, error) {
 	var customer entities.Customer
-	err := c.DB.First(&customer, id).Error
+	err := c.DB.Where("id = ?", id).First(&customer).Error
 	return &customer, err
 }
 

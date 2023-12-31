@@ -25,4 +25,6 @@
 *.out
 # Others
 build
+# Database
+*.db
 
