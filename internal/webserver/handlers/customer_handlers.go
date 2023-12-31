@@ -6,6 +6,7 @@ import (
 	"github.com/jandiralceu/crm/internal/dto"
 	"github.com/jandiralceu/crm/internal/entities"
 	"github.com/jandiralceu/crm/internal/infra/database"
+	"github.com/jandiralceu/crm/pkg/errors"
 	"net/http"
 	"strconv"
 )
@@ -24,19 +25,24 @@ func NewCustomerHandler(db database.ICustomer) *CustomerHandler {
 func (h *CustomerHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var c dto.CreateCustomerDto
 
+	w.Header().Set("Content-Type", "application/json")
+
 	if err := json.NewDecoder(r.Body).Decode(&c); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.BadRequest})
 		return
 	}
 
 	category, err := entities.NewCustomer(c.Name, c.Role, c.Email, c.Phone)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: err.Error()})
 		return
 	}
 
 	if err := h.CategoryDB.Create(category); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.InternalServerError})
 		return
 	}
 
@@ -47,16 +53,19 @@ func (h *CustomerHandler) Create(w http.ResponseWriter, r *http.Request) {
 func (h *CustomerHandler) FindByID(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
+	w.Header().Set("Content-Type", "application/json")
+
 	category, err := h.CategoryDB.FindByID(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.NotFound})
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(category); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.InternalServerError})
 		return
 	}
 }
@@ -78,16 +87,19 @@ func (h *CustomerHandler) FindAll(w http.ResponseWriter, r *http.Request) {
 		sort = "asc"
 	}
 
+	w.Header().Set("Content-Type", "application/json")
+
 	customers, err := h.CategoryDB.FindAll(page, limit, sort)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.InternalServerError})
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(customers); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.InternalServerError})
 		return
 	}
 }
@@ -97,19 +109,18 @@ func (h *CustomerHandler) Update(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	var c dto.UpdateCustomerDto
 
+	w.Header().Set("Content-Type", "application/json")
+
 	if err := json.NewDecoder(r.Body).Decode(&c); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.BadRequest})
 		return
 	}
 
 	customer, err := h.CategoryDB.FindByID(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		return
-	}
-
-	if customer == nil {
-		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.NotFound})
 		return
 	}
 
@@ -127,6 +138,7 @@ func (h *CustomerHandler) Update(w http.ResponseWriter, r *http.Request) {
 
 	if err := h.CategoryDB.Update(customer); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.InternalServerError})
 		return
 	}
 
@@ -137,16 +149,19 @@ func (h *CustomerHandler) Update(w http.ResponseWriter, r *http.Request) {
 func (h *CustomerHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
+	w.Header().Set("Content-Type", "application/json")
+
 	_, err := h.CategoryDB.FindByID(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		return
-	}
-
-	if err := h.CategoryDB.Delete(id); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.NotFound})
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
+	if err := h.CategoryDB.Delete(id); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.InternalServerError})
+		return
+	}
 }
