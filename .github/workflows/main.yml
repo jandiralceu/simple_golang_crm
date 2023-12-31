@@ -71,9 +71,6 @@ jobs:
         with:
           name: crm
 
-      - name: 📦 Unzip artifact
-        run: unzip crm.zip
-
       - name: list directories
         run: ls -la
 
