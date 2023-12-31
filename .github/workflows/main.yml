@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  lint_test_and_build:
+  lint_and_test:
     runs-on: ubuntu-latest
 
     environment: Production
@@ -45,9 +45,6 @@ jobs:
           COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
         run: goveralls -coverprofile=covprofile -service=github
 
-      - name: 👷🏿 Build
-        run: go build cmd/crm/main.go
-
       - name: 📦 Archive
         uses: actions/upload-artifact@v3
         with:
@@ -55,7 +52,7 @@ jobs:
           path: .
 
   deploy_to_gae:
-    needs: lint_test_and_build
+    needs: lint_and_test
 
     runs-on: ubuntu-latest
 
