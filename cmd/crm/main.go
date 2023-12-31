@@ -58,5 +58,7 @@ func main() {
 		r.Delete("/{id}", customerHandler.Delete)
 	})
 
+	r.Get("/", handlers.MainPageHandler)
+
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
