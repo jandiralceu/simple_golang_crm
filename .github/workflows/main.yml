@@ -30,8 +30,8 @@ jobs:
         run: go vet ./...
 
       - name: 👨🏿‍⚕️ Run test and generate coverage
-        run: go test -coverprofile=covprofile.out ./...
-        # run: go test -race -covermode atomic -coverprofile=covprofile ./...
+        # run: go test -coverprofile=covprofile.out ./...
+        run: go test -race -covermode atomic -coverprofile=covprofile ./...
 
       - name: ⏳ Install coveralls
         run: go install github.com/mattn/goveralls@v0.0.12
@@ -39,7 +39,7 @@ jobs:
       - name: 📈 Send coverage to coveralls
         env:
           COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
-        run: goveralls -repotoken $COVERALLS_TOKEN
+        run: goveralls -coverprofile=covprofile -service=github
 
       - name: 👷🏿 Build
         run: go build cmd/crm/main.go
