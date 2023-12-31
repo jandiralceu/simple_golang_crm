@@ -32,7 +32,6 @@ func (h *CustomerHandler) Create(w http.ResponseWriter, r *http.Request) {
 	category, err := entities.NewCustomer(c.Name, c.Role, c.Email, c.Phone)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-
 		return
 	}
 
@@ -50,11 +49,6 @@ func (h *CustomerHandler) FindByID(w http.ResponseWriter, r *http.Request) {
 
 	category, err := h.CategoryDB.FindByID(id)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	if category == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
@@ -110,7 +104,7 @@ func (h *CustomerHandler) Update(w http.ResponseWriter, r *http.Request) {
 
 	customer, err := h.CategoryDB.FindByID(id)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -143,13 +137,8 @@ func (h *CustomerHandler) Update(w http.ResponseWriter, r *http.Request) {
 func (h *CustomerHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
-	customer, err := h.CategoryDB.FindByID(id)
+	_, err := h.CategoryDB.FindByID(id)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	if customer == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
