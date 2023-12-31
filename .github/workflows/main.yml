@@ -7,7 +7,7 @@ on:
 
 jobs:
   lint_and_test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     environment: Production
 
@@ -31,7 +31,7 @@ jobs:
       - name: ⏳ Install dependencies
         run: go mod download
 
-      - name: 🔍 Lint
+      - name: 🔬 Lint
         run: go vet ./...
 
       - name: 👨🏿‍⚕️ Run test and generate coverage
@@ -45,7 +45,7 @@ jobs:
           COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
         run: goveralls -coverprofile=covprofile -service=github
 
-      - name: 📦 Archive
+      - name: ☁️ Save artifact
         uses: actions/upload-artifact@v3
         with:
           name: crm
@@ -54,7 +54,7 @@ jobs:
   deploy_to_gae:
     needs: lint_and_test
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     environment: Production
 
@@ -63,7 +63,7 @@ jobs:
       id-token: write
 
     steps:
-      - name: 📦 Download artifact
+      - name: 🖥️ Download artifact
         uses: actions/download-artifact@v2
         with:
           name: crm
@@ -77,7 +77,7 @@ jobs:
       - name: ⚙️ Setup Google Cloud SDK
         uses: "google-github-actions/setup-gcloud@v2"
 
-      - name: ⚙️ Configure gcloud CLI
+      - name: 🛠️ Configure gcloud CLI
         run: gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: 🚀 Deploy to GAE
