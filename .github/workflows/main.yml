@@ -66,6 +66,17 @@ jobs:
       id-token: write
 
     steps:
+      - name: 📦 Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: crm
+
+      - name: 📦 Unzip artifact
+        run: unzip crm.zip
+
+      - name: list directories
+        run: ls -la
+
       - id: "auth"
         uses: "google-github-actions/auth@v2"
         with:
@@ -75,21 +86,7 @@ jobs:
         uses: "google-github-actions/setup-gcloud@v2"
 
       - name: Use GCloud CLI
-        run:
-          gcloud info
+        run: gcloud info
 
-          # export_default_credentials: true
-      # - name: 📦 Download artifact
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: crm
       # - id: 'auth'
       #   uses: 'google-github-actions/auth@v2'
-
-      # - name: ⚙️ Setup Google Cloud SDK
-      #   uses: "google-github-actions/setup-gcloud@v2"
-      #   with:
-      #     project_id: ${{ secrets.GCP_PROJECT_ID }}
-
-      #     service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-      #     export_default_credentials: true
