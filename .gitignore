@@ -5,7 +5,7 @@
 main
 
 # coverage
-c.out
+*.out
 
 # environment
 .env

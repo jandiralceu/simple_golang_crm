@@ -10,9 +10,3 @@ type ID = uuid.UUID
 func GenerateUUID() ID {
 	return uuid.New()
 }
-
-// ParseUUID parses a string into a UUID
-//func ParseUUID(s string) (ID, error) {
-//	id, err := uuid.Parse(s)
-//	return id, err
-//}
