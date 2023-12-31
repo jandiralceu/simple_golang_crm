@@ -3,9 +3,11 @@ package main
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/jandiralceu/crm/configs"
 	"github.com/jandiralceu/crm/internal/entities"
 	"github.com/jandiralceu/crm/internal/infra/database"
 	"github.com/jandiralceu/crm/internal/webserver/handlers"
+	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
@@ -14,10 +16,27 @@ import (
 
 func main() {
 	r := chi.NewRouter()
-
-	db, err := gorm.Open(sqlite.Open("./cmd/crm/app.db"), &gorm.Config{})
+	config, err := configs.LoadConfig("/")
 	if err != nil {
-		panic("failed to connect database")
+		panic(err)
+	}
+
+	var db *gorm.DB
+
+	if config.DBDns == "" {
+		if config.Environment != "develop" {
+			panic("failed to connect database")
+		}
+
+		db, err = gorm.Open(sqlite.Open("/app.db"), &gorm.Config{})
+		if err != nil {
+			panic("failed to connect database")
+		}
+	} else {
+		db, err = gorm.Open(postgres.Open(config.DBDns), &gorm.Config{})
+		if err != nil {
+			panic("failed to connect database")
+		}
 	}
 
 	if err = db.AutoMigrate(&entities.Customer{}); err != nil {
@@ -25,8 +44,10 @@ func main() {
 	}
 
 	customerHandler := handlers.NewCustomerHandler(database.CustomerDB(db))
+	if config.Environment == "develop" {
+		r.Use(middleware.Logger)
+	}
 
-	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
 	r.Route("/api/v1/customers", func(r chi.Router) {
