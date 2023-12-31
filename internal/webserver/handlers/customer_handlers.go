@@ -62,12 +62,13 @@ func (h *CustomerHandler) FindByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(category); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.InternalServerError})
 		return
 	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 // FindAll is a handler to find all Customers
@@ -96,12 +97,13 @@ func (h *CustomerHandler) FindAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(customers); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.InternalServerError})
 		return
 	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 // Update is a handler to update a Customer
@@ -158,10 +160,11 @@ func (h *CustomerHandler) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
 	if err := h.CategoryDB.Delete(id); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(dto.ErrorResponseDto{Message: errors.InternalServerError})
 		return
 	}
+
+	w.WriteHeader(http.StatusOK)
 }

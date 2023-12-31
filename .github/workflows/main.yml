@@ -23,6 +23,11 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
 
+      - name: ✍🏿 Create .env file
+        run: |
+          echo "ENVIRONMENT=production" > .env
+          echo "DB_DNS=${{ secrets.DB_DNS }}" >> .env
+
       - name: ⏳ Install dependencies
         run: go mod download
 
