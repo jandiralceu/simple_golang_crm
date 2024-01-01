@@ -42,6 +42,6 @@ go tool cover -html="c.out"
 
 **Note:** The ```c.out``` file is also generated when you push all commits to remote branch as part of local CI.
 
-Evertime the project is submitted to github, the pipeline generate the coverage and upload it to coveralls. You can see the results on the badge bellow.
+Everytime the project is submitted to GitHub, the pipeline generate the coverage and upload it to coveralls. You can see the results on the badge bellow.
 
 [![Coverage Status](https://coveralls.io/repos/github/jandiralceu/simple_golang_crm/badge.svg)](https://coveralls.io/github/jandiralceu/simple_golang_crm)

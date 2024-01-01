@@ -51,7 +51,7 @@ jobs:
           name: crm
           path: .
 
-  deploy_to_gae:
+  deploy:
     needs: lint_and_test
 
     runs-on: ubuntu-20.04
@@ -80,5 +80,5 @@ jobs:
       - name: 🛠️ Configure gcloud CLI
         run: gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: 🚀 Deploy to GAE
+      - name: 🚀 Deploy to Google App Engine
         run: gcloud app deploy app.yaml --quiet

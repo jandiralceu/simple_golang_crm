@@ -1,6 +1,9 @@
 package main
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jandiralceu/crm/configs"
@@ -10,8 +13,6 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"log"
-	"net/http"
 )
 
 func main() {
@@ -28,13 +29,11 @@ func main() {
 			panic("failed to connect database")
 		}
 
-		db, err = gorm.Open(sqlite.Open("./app.db"), &gorm.Config{})
-		if err != nil {
+		if db, err = gorm.Open(sqlite.Open("./app.db"), &gorm.Config{}); err != nil {
 			panic("failed to connect database")
 		}
 	} else {
-		db, err = gorm.Open(postgres.Open(config.DBDns), &gorm.Config{})
-		if err != nil {
+		if db, err = gorm.Open(postgres.Open(config.DBDns), &gorm.Config{}); err != nil {
 			panic("failed to connect database")
 		}
 	}
@@ -44,13 +43,11 @@ func main() {
 	}
 
 	customerHandler := handlers.NewCustomerHandler(database.CustomerDB(db))
-	if config.Environment == "develop" {
-		r.Use(middleware.Logger)
-	}
 
+	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	r.Route("/api/v1/customers", func(r chi.Router) {
+	r.Route("/customers", func(r chi.Router) {
 		r.Get("/", customerHandler.FindAll)
 		r.Get("/{id}", customerHandler.FindByID)
 		r.Post("/", customerHandler.Create)
